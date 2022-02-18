@@ -1,6 +1,8 @@
 package com.sofka.hibernatecrud.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,13 +21,24 @@ public class Employee {
     @Column(length = 10, nullable = false, unique = true)
     private String employeeId;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_role")
+    private Role role;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "employee_project",
+                joinColumns = { @JoinColumn(name = "employee_id") },
+                inverseJoinColumns = { @JoinColumn(name = "project_id")})
+    private List<Project> projects = new ArrayList<Project>();
+
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String employeeId) {
+    public Employee(String firstName, String lastName, String employeeId, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.employeeId = employeeId;
+        this.role = role;
     }
 
     public Long getId() {
@@ -54,6 +67,22 @@ public class Employee {
 
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 
     @Override
