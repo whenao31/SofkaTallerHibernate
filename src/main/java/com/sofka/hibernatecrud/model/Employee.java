@@ -25,13 +25,22 @@ public class Employee {
     @JoinColumn(name = "id_role")
     private Role role;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+//    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name = "employee_project",
                 joinColumns = { @JoinColumn(name = "employee_id") },
                 inverseJoinColumns = { @JoinColumn(name = "project_id")})
     private List<Project> projects = new ArrayList<Project>();
 
     public Employee() {
+    }
+
+    public Employee(String firstName, String lastName, String employeeId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.employeeId = employeeId;
+        this.role = null;
+        this.projects = new ArrayList<>();
     }
 
     public Employee(String firstName, String lastName, String employeeId, Role role) {
@@ -108,6 +117,8 @@ public class Employee {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", employeeId='" + employeeId + '\'' +
+                ", role=" + role +
+                ", projects=" + projects +
                 '}';
     }
 }
