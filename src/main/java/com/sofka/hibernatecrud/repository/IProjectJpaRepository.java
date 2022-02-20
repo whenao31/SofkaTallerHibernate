@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IProjectJpaRepository extends JpaRepository<Project, Long> {
+    public abstract Project findByName(String name);
 }
